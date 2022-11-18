@@ -1,0 +1,31 @@
+{
+	"id": "template-Default",
+	"name": "Default",
+	"stylesheet": "css/styles.less",
+	"expose": [
+	],
+
+	"banners": [
+		{
+			"container": "advertisements",
+			"ratio": {
+				"x": 1,
+				"y": 3
+			}
+		},
+		{
+			"container": "screensaver",
+			"ratio": {
+				"x": 16,
+				"y": 9
+			}
+		},
+		{
+			"container": "screensaver-portrait",
+			"ratio": {
+				"x": 9,
+				"y": 16
+			}
+		}
+	]
+}
