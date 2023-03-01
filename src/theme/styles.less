@@ -153,6 +153,28 @@ button {
     }
 }
 
+.wf-groups-menu {
+	.wf-list-item {
+		flex-direction: column;
+	}
+
+	.wf-list-item.active > .wf-item-content {
+		font-weight: 600;
+	}
+
+	ul {
+		background-color: white;
+		padding: 0;
+		margin-left: -1.85rem;
+		margin-top: 1.5rem;
+		margin-right: -0.5rem;
+	}
+
+	.wf-sublist {
+		margin-top: 1.5rem !important;
+	}
+}
+
 
 .wf-floors-menu {		
     
@@ -542,7 +564,8 @@ button {
     
     .wf-poi-description {
         line-height: 1.2;
-        
+		font-size: 1.1rem;
+        padding: 0 1em;
     }
     
     .wf-poi-contact .address {

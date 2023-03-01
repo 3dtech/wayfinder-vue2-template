@@ -13,7 +13,7 @@ import { mapState } from 'vuex';
 export default {
 	name: 'FlagsMenu',
 	computed: {
-		...mapState(['languages', 'language', 'reset'])
+		...mapState('wf', ['languages', 'language', 'reset'])
 	},
 	data () {
 		return {

@@ -8,7 +8,7 @@
 				<FlagsMenu />
 				<div class="header-content">
 					<WFBuildingLogo class="hide-landscape" />
-					<div class="clock-container">
+					<div class="clock-container" v-show="template && template.displayClock">
 						<div class="clock">
 							<ClockComponent format="HH:mm" />
 						</div>
@@ -36,7 +36,7 @@
 					<WFTabs ref="tabs" :activeTab="currentTab" animate="horizontal">
 						<WFTab name="groups">
 							<WFScrollableArea>
-								<WFGroupsMenu @clicked="onGroupMenuClick"/>
+								<WFGroupsMenu @clicked="onGroupMenuClick" @poiClicked="onPOIClick" :showPOIs="true"/>
 							</WFScrollableArea>
 						</WFTab>
 						<WFTab name="group-pois">
@@ -50,19 +50,19 @@
 							</WFScrollableArea>
 						</WFTab>
 						<WFTab name="poi-info" class="hide-portrait">
-							<WFPOI :poi="currentPOI" :showLogo="true" :showPathButton="true" :showDescription="true"/>
+							<WFPOI :poi="currentPOI" :showLogo="template.poiinfoShowLogo" :showRoomID="template.poiinfoShowRoomId" :showPathButton="true" :showDescription="true"/>
 						</WFTab>
 					</WFTabs>
 				</div>
 				<div class="col col-poi hide-landscape" ref="poiinfo">
-					<WFPOI :poi="currentPOI" :showLogo="true" :showPathButton="true" :showDescription="true"/>
+					<WFPOI :poi="currentPOI" :showLogo="template.poiinfoShowLogo" :showRoomID="template.poiinfoShowRoomId" :showPathButton="true" :showDescription="true"/>
 					<div data-translation-element="no-menu" class="no-poi-info hide-landscape">Choose from the menu</div>
 				</div>
 			</div>
 		</div>
 		<div id="screensaver" class="banners-screensaver" v-show="screensaver" @click="hideBanner()">
-			<WFBanner template="default" container="screensaver" class="hide-portrait" @clicked="onBannerClick" @hasbanners="hasBanners"></WFBanner>
-			<WFBanner template="default" container="screensaver-portrait" class="hide-landscape" @clicked="onBannerClick" @hasbanners="hasBanners"></WFBanner>
+			<WFBanner template="Default" container="screensaver" class="hide-portrait" @clicked="onBannerClick" @hasbanners="hasBanners"></WFBanner>
+			<WFBanner template="Default" container="screensaver-portrait" class="hide-landscape" @clicked="onBannerClick" @hasbanners="hasBanners"></WFBanner>
 		</div>
 	</div>
 </template>
@@ -103,26 +103,20 @@ export default {
 	data () {
 		return {
 			lastClick: false,
-			landscape: false,
 			screensaver: false,
 			hasScreensaver: false,
+			currentTab: "groups",
+			showSearch: false
 		}
 	},
 	computed: {//yahLogo
-		...mapState(['currentTab', 'searchVisible', 'maxInActivity', 'currentGroup', 'currentFloor', 'currentPOI']),
+		...mapState('wf', ['maxInActivity', 'currentFloor', 'landscape', 'portrait', 'template']),
+		...mapState(['searchVisible', 'currentGroup', 'currentPOI']),
 		apiHost () {
-			console.log('apiHost', this.$WF_API_HOST);
 			return this.$WF_API_HOST;
 		},
 		assetHost () {
 			return this.$WF_ASSET_HOST;
-		}
-	},
-	mounted () {
-		this.resize();
-
-		window.onresize = () => {
-			this.resize();
 		}
 	},
 	methods: {
@@ -131,31 +125,42 @@ export default {
 			this.$refs['map'].run();
 			
 			this.lastClick = setTimeout(() => {
-				this.$refs.map.reset();
+				if(this.$refs.map) {
+					this.$refs.map.reset();
+				}
 				this.reset();
 			}, this.maxInActivity * 1000);
 			return false;
 		},
 		onGroupMenuClick (group) {
-			this.$store.dispatch('SET_CURRENT_GROUP', group);
-			this.$store.dispatch('SET_CURRENT_TAB', 'group-pois');
+			this.$store.dispatch('setGroup', group);
 		},
 		onMapPOIClick (poi) {
-			this.$store.dispatch('SET_CURRENT_POI', poi);
+			this.$store.dispatch('setPOI', poi);
 
 			if (this.landscape) {
-				this.$store.dispatch('SET_CURRENT_TAB', 'poi-info');
+				this.setCurrentTab('poi-info');
 			}
 		},
 		onPOIClick (poi) {
 			console.log('onPOIClick', poi, this.landscape);
-			this.$store.dispatch('SET_CURRENT_POI', poi);
+			this.$store.dispatch('setPOI', poi);
 
 			if (this.landscape) {
-				this.$store.dispatch('SET_CURRENT_TAB', 'poi-info');
+				this.setCurrentTab('poi-info');
+			}
+
+			if (this.template.poiinfoShowFloor && poi.getNode()) {
+				this.$wayfinder.showFloor(poi.getNode().getFloor());
+			}
+			if (this.template.poiinfoShowPath && poi.getNode()) {
+				this.$wayfinder.showPath(poi.getNode(), poi);
 			}
 
 			this.$wayfinder.statistics.onClick(poi.id, "menu");
+		},
+		setCurrentTab (tab) {
+			this.currentTab = tab;
 		},
 		onSearchPOIClick (poi) {
 			if (poi) {
@@ -171,22 +176,17 @@ export default {
 			}
 		},
 		reset () {
-			this.$store.dispatch('SET_CURRENT_TAB', 'az');
+			this.setCurrentTab('az');
 			this.$store.dispatch('SHOW_SEARCH', false);
-			this.$store.dispatch('SET_RESET');
+			this.$store.dispatch('wf/SET_RESET');
 			this.screensaver = this.hasScreensaver;
 			this.$refs['map'].pause();
-		},
-		resize () {
-			let _l = window.matchMedia("(orientation: landscape)");
-			this.landscape = _l ? _l.matches : false;
-			this.$store.dispatch('SET_LANDSCAPE', this.landscape);
 		},
 		doSomething () {},
 		switchMainTab (tab) {
 			if (tab !== 'search') {
 				if (!(tab === 'poi-info' && !this.landsape)) {
-					this.$store.dispatch('SET_CURRENT_TAB', tab);
+					this.setCurrentTab(tab);
 				}
 			}
 			else {
@@ -198,17 +198,16 @@ export default {
 			this.$refs['map'].run();
 		},
 		toGroups () {
-			this.$store.dispatch('SET_CURRENT_TAB', 'groups');
+			this.setCurrentTab('groups');
 		},
 		hideBanner () {
 			this.screensaver = false;
 		},
 		mapLoaded () {
 			this.$refs['map'].run();
-
-
 		},
 		hasBanners (has) {
+			console.log('hasbanners', has);
 			this.hasScreensaver = has;
 		}
 	}

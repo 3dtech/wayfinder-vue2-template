@@ -18,7 +18,8 @@ export default {
 		WFSearch
 	},
 	computed: {
-		...mapState(['language', 'searchVisible', 'reset'])
+		...mapState('wf', ['language', 'reset']),
+		...mapState(['searchVisible'])
 	},
 	data () {
 		return {

@@ -1,29 +1,75 @@
 import Vue from 'vue'
-import App from './App.vue'
-//import { WFStore } from '@3dwayfinder/wayfinder-vue-components';
-import store from "./store.js";
-import './registerServiceWorker'
-import Icon from "./plugins/Icon.vue"
-
+import Vuex from 'vuex'
 import Vue2TouchEvents from 'vue2-touch-events'
 import VueObserveVisibility from 'vue-observe-visibility'
 import WayfinderVueComponents from '@3dwayfinder/wayfinder-vue-components';
 
-Vue.use(WayfinderVueComponents);
+import App from './App.vue'
+import './registerServiceWorker'
+import Icon from "./plugins/Icon.vue"
+
+Vue.use(Vuex);
 Vue.use(VueObserveVisibility);
 Vue.use(Vue2TouchEvents, {tapTolerance: 20});
 
 Vue.config.productionTip = false
 Vue.component("icon", Icon);
 
-//const apiHost = "//api.3dwayfinder.com";
-//const assetHost = "//static.3dwayfinder.com/shared/";
-//const jsHost = "//static.3dwayfinder.com";
+const env = "snapshot";
+let WF_MAP_TYPE = "3d";   
 
-const apiHost = "../../../api/"
-const assetHost = "../../../shared/";
-const jsHost = "../../../";
+const urls = {
+  api: {
+    live: "//api.3dwayfinder.com",
+    enterprise: "//example.com/api/",
+    snapshot: "../../../api/"
+  },
+  assets: {
+    live: "//static.3dwayfinder.com/shared/",
+    enterprise: "//example.com/shared/",
+    snapshot: "../../../shared/"
+  },
+  js: {
+    live: "//static.3dwayfinder.com",
+    enterprise: "//example.com/js/",
+    snapshot: "../../../"
+  }
+}
 
+const store = new Vuex.Store({
+  state: {
+    appName: "Wayfinder Vue Components",
+    currentPOI: null,
+    currentGroup: null,
+    searchVisible: false,
+  },
+  mutations: {
+    setPOI (state, poi) {
+      state.currentPOI = poi;
+    },
+    setGroup (state, group ) {
+      state.currentGroup = group;
+    },
+    showSarch (state, show) {
+      state.searchVisible = show;
+    }
+  },
+  actions: {
+		setPOI : (context, poi) => {
+			context.commit('setPOI',  Object.freeze(poi));
+		},
+    setGroup : (context, group) => {
+			context.commit('setGroup',  Object.freeze(group));
+		},
+    SHOW_SEARCH : (context, show) => {
+			context.commit('showSarch',  show);
+		},
+  }
+})
+
+function getURL(_env, type) {
+  return urls[type][_env];
+}
 
 /* global WF_MAP_TYPE WayfinderAPI wayfinder*/
 
@@ -42,24 +88,28 @@ function loadScript(url, callback) {
 
 function loadVue () {
   Vue.prototype.$WF_MAP_TYPE = WF_MAP_TYPE;
-  Vue.prototype.$WF_API_HOST = apiHost;
-  Vue.prototype.$WF_ASSET_HOST = assetHost;
+  Vue.prototype.$WF_API_HOST = getURL(env, "api");
+  Vue.prototype.$WF_ASSET_HOST = getURL(env, "assets");
   new Vue({
-    store: store,
-    render: h => h(App)
+    store,
+    render: h => h(App),
+    created () {
+      Vue.use(WayfinderVueComponents, this.$store) // Create it by passing in the store you want to use
+    }
   }).$mount('#app')
 }
 
+
 function load3D () {
-  loadScript(jsHost + "/shared/js/minified/frak-latest.debug.js", function () {
-    loadScript(jsHost + "/js/dist/3d/latest/Wayfinder3D.debug.js", function () {
+  loadScript(getURL(env, "js") + "/shared/js/minified/frak-latest.debug.js", function () {
+    loadScript(getURL(env, "js") + "/js/dist/3d/latest/Wayfinder3D.debug.js", function () {
       loadVue();
     });
   });
 }
 
 function load2D () {
-	loadScript(jsHost + "/js/dist/2d/latest/Wayfinder2D.debug.js", function () {
+	loadScript(getURL(env, "js") + "/js/dist/2d/latest/Wayfinder2D.debug.js", function () {
   	loadVue();
 	});
 }
