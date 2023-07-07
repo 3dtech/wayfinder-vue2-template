@@ -16,7 +16,7 @@ import { mapState } from 'vuex';
 export default {
 	name: 'ShortcutsMenu',
 	computed: {
-		...mapState(['shortcuts', 'language', 'landscape']),
+		...mapState('wf', ['shortcuts', 'language', 'landscape']),
 		fakeButtons () {
 			if (!this.shortcuts) return 0;
 			return (Math.ceil((this.shortcuts.length) / 3) * 3) - (this.shortcuts.length);

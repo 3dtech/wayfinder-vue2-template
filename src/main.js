@@ -15,22 +15,25 @@ Vue.use(Vue2TouchEvents, {tapTolerance: 20});
 Vue.config.productionTip = false
 Vue.component("icon", Icon);
 
-const env = "snapshot";
+const env = "live";
 let WF_MAP_TYPE = "3d";   
 
 const urls = {
   api: {
     live: "//api.3dwayfinder.com",
     enterprise: "//example.com/api/",
+    dev: "//api.3dwayfinder.com",
     snapshot: "../../../api/"
   },
   assets: {
-    live: "//static.3dwayfinder.com/shared/",
+    live: "https://wayfinder-cdn.com/shared/",
+    dev: "//static.3dwayfinder.com/shared/",
     enterprise: "//example.com/shared/",
     snapshot: "../../../shared/"
   },
   js: {
-    live: "//static.3dwayfinder.com",
+    live: "https://wayfinder-cdn.com/",
+    dev: "//static.3dwayfinder.com",
     enterprise: "//example.com/js/",
     snapshot: "../../../"
   }
