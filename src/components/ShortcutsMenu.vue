@@ -24,10 +24,7 @@ export default {
 	},
 	methods: {
 		showShortcut (shortcut) {
-			var nearest = this.$wayfinder.getNearestPOI(this.$wayfinder.getKiosk(), shortcut.pois);
-			if (typeof nearest === 'object') {
-				this.$wayfinder.showPath(nearest.node, nearest);
-			}
+			this.$emit('showShortcut', shortcut);
 		},
 		getImage (id) {
 			return WayfinderAPI.getURL("images", "thumbnail", [id]);		
