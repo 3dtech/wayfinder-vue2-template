@@ -32,6 +32,7 @@ export default {
 		}
 	},
 	mounted () {
+		this.$nextTick(() => {
 			this.$refs.search.addLayout("et", {
 				'name': "Estonian",
 				'local_name': "Eesti",
@@ -86,6 +87,7 @@ export default {
 					],
 				}
 			});
+		});
 	},
 	watch: {
 		searchVisible (current) {

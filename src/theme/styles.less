@@ -234,10 +234,10 @@ button {
 	flex-wrap: nowrap;
 
 	.wf-building-logo {
-		height: 100%;
+		height: 90%;
 		width: 50%;
 		margin: auto;
-		background-size: auto 90% !important;
+		background-size:  90% contain;
         
 	}
 
@@ -273,14 +273,20 @@ button {
 		}
 	}
 
-	.languages-container {
+	.wf-languages-container {
 		background-color: @main-background;
 		border-radius: 0 0 @corner-radius-small @corner-radius-large;
 		.default-drop-shadow();
 		height: 100%;
 		width: 9rem;
+		display: flex;
+		flex-direction: column;
 
-        &.active {
+		.wf-list {
+			flex-grow: 1;
+		}
+
+        &.wf-active {
 			height: fit-content;
 
 			.languages-container-select {
@@ -301,7 +307,7 @@ button {
                 background-size: cover;
                 background-position: 50% 50%;
                 background-repeat: no-repeat;
-                width: 100%;
+                width: 100% !important;
                 height: 100%;
             }
 
@@ -561,8 +567,14 @@ button {
                 background-image: url("data:image/svg+xml,%3Csvg width='15' height='26' viewBox='0 0 15 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.98746 4.57051C7.55784 4.55304 8.03625 4.34316 8.42264 3.94088C8.80903 3.5386 8.99301 3.06638 8.97463 2.52422C8.95625 1.98195 8.74461 1.51849 8.33984 1.13379C7.93507 0.749034 7.44744 0.565392 6.87707 0.582865C6.3067 0.600337 5.82829 0.810213 5.44189 1.21249C5.0555 1.61477 4.8623 2.08699 4.8623 2.62916C4.8623 3.17132 5.07388 3.63483 5.49709 4.01959C5.9203 4.40434 6.41709 4.58798 6.98746 4.57051Z' fill='white'/%3E%3Cpath d='M13.9704 11.2079L10.9344 9.63381L8.45047 5.85604C7.97206 5.29636 7.3833 5.01654 6.6841 5.01654C6.20569 5.01654 5.74572 5.20894 5.30412 5.5937L1.55059 9.21406C1.4402 9.354 1.36662 9.5114 1.3298 9.68628L0.833008 13.7264V13.8313C0.833008 14.0762 0.925024 14.286 1.109 14.461C1.29298 14.6358 1.51378 14.7233 1.77139 14.7233C2.029 14.7233 2.24058 14.6358 2.40618 14.461C2.57178 14.286 2.67296 14.0937 2.70977 13.8838L3.09617 10.4208L4.42094 9.16159L3.20656 18.8159L1.0538 23.3808C0.980223 23.5906 0.943406 23.7826 0.943406 23.958C0.943406 24.3422 1.0814 24.6663 1.3574 24.9287C1.63339 25.191 1.9738 25.3046 2.37858 25.2697C2.93057 25.2697 3.33534 25.0243 3.59296 24.5352L5.91131 19.603C5.91131 19.5678 5.92969 19.5067 5.96651 19.4193C6.00338 19.3317 6.0402 19.253 6.07691 19.1832C6.11373 19.1132 6.13211 19.0431 6.13211 18.9734L6.4081 16.6122L8.78166 24.3778C9.03927 25.0074 9.49925 25.3047 10.1616 25.2697C10.5296 25.2697 10.8516 25.1386 11.1276 24.8762C11.4036 24.6139 11.5416 24.2897 11.5416 23.9055C11.5416 23.87 11.5324 23.8268 11.514 23.7744C11.4956 23.7219 11.4864 23.678 11.4864 23.6431L8.17447 12.8869L8.56086 9.37147L9.49925 10.7881C9.57283 10.8931 9.66484 10.9805 9.77524 11.0505L13.032 12.782C13.2528 12.8519 13.4 12.8869 13.4736 12.8869C13.7312 12.8869 13.952 12.7907 14.136 12.5983C14.3199 12.4059 14.412 12.1873 14.412 11.9425C14.412 11.6276 14.2647 11.3828 13.9704 11.2079Z' fill='white'/%3E%3C/svg%3E%0A");
             }
         }
-        
+        &.wf-show-accessibility-path {
+			button i {
+				background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjBtbSIgaGVpZ2h0PSIyNm1tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMCAyNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KIDxnIGZpbGw9IiNmZmYiPgogIDxwYXRoIGQ9Im03Ljg0NzkgNi4wODQ5YzEuNDQxOSAwIDIuNjEwOC0xLjE2ODkgMi42MTA4LTIuNjEwOHMtMS4xNjg5LTIuNjEwOC0yLjYxMDgtMi42MTA4LTIuNjEwOCAxLjE2ODktMi42MTA4IDIuNjEwOCAxLjE2ODkgMi42MTA4IDIuNjEwOCAyLjYxMDh6Ii8+CiAgPHBhdGggZD0ibTYuNTk1MyAyMS4wOGMtMC45ODc4NyAwLTEuNzk5My0wLjgxMTUtMS43OTkzLTEuNzk5MyAwLTAuNjE3NSAwLjI5OTg5LTEuMTQ2NyAwLjc3NjE5LTEuNDgxOWwtMS4zMDU0LTMuOTUxNGMtMi4wOTkyIDAuODk5Ni0zLjU2MzQgMi45OTg5LTMuNTYzNCA1LjQxNTYgMCAzLjI2MzUgMi42NDYxIDUuOTA5NiA1LjkwOTYgNS45MDk2IDAuNDc2MyAwIDAuOTM0OTUtMC4wNTI5IDEuMzc2LTAuMTU4OGwtMS4zMDU0LTMuOTUxNGMtMC4wMzUyOCAwLjAxNzYtMC4wNTI5MiAwLjAxNzYtMC4wODgyIDAuMDE3NnoiLz4KICA8cGF0aCBkPSJtNi41OTUzIDEzLjM3MWMtMC40NzYzIDAtMC45MzQ5NiAwLjA1MjktMS4zNzYgMC4xNTg4bDEuMzA1NCAzLjk1MTRoMC4wNzA1N2MwLjk4Nzg3IDAgMS43OTkzIDAuODExNSAxLjc5OTMgMS43OTk0IDAgMC42MTc0LTAuMjk5ODkgMS4xNDY2LTAuNzc2MTggMS40ODE4bDEuMzA1NCAzLjk1MTVjMi4wOTkyLTAuODk5NyAzLjU2MzQtMi45OTg5IDMuNTYzNC01LjQxNTcgMC4wMTc2LTMuMjgxMS0yLjYyODUtNS45MjcyLTUuODkyLTUuOTI3MnoiLz4KICA8cGF0aCBkPSJtNi41OTUzIDEyLjM4MmMyLjI1OCAwIDQuMjY5IDEuMDkzNyA1LjUyMTUgMi43Njk2bC0yLjUwNS03LjQ0NDRoLTMuNzkyN2wtMS41ODc2IDQuNjc0OGgyLjM2Mzh6Ii8+CiAgPHBhdGggZD0ibTEyLjMxMSAxNS4zOThjMC43NTg1IDEuMTExNCAxLjE5OTUgMi40MzQ0IDEuMTk5NSAzLjg4MSAwIDAuODExNC0wLjE0MTEgMS42MDUzLTAuNDA1NyAyLjMyODVsMS4yMTcyIDMuNTI4MWg0Ljk5MjNsLTMuMjYzNS05LjczNzZoLTMuNzM5OHoiLz4KIDwvZz4KPC9zdmc+Cg==");
+			}
+		}
     }
+
+	
     
     .wf-poi-description {
         line-height: 1.2;
@@ -618,6 +630,7 @@ button {
 	}
 
 	.header {
+		pointer-events: none;
 		.header-content {
 			background-color: transparent;
 			box-shadow: none;
@@ -629,13 +642,15 @@ button {
 		}
 
 		.wf-yah {
+			pointer-events: auto;
 			width: 10rem !important;
 			background-color: @main-background;
 			margin-right: 0.5rem;
 			padding-top: @menus-col-height-landscape * 0.6;
 		}
 
-		.languages-container {
+		.wf-languages-container {
+			pointer-events: auto;
 			border-radius: 0 @corner-radius-small @corner-radius-large @corner-radius-small;
 		}
 	}
@@ -661,6 +676,7 @@ button {
 		.wf-building-logo {
 			height: @menus-col-height-landscape;
 			border-radius: @corner-radius-small;
+			background-size:  90% auto !important;
 			.default-drop-shadow();
 		}
 
@@ -726,8 +742,8 @@ button {
 }
 
 .loading {
-	width: 100vh;
-	height: 100vh;
+	width: 100%;
+	height: 100%;
 	position: absolute;
 	top: 0;
 	bottom: 0;
