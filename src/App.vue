@@ -1,7 +1,7 @@
 <template>
-	<WFApp id="app">
+	<WFApp id="app" @screensaving="reset">
 		<div class="map-area-container" :class="{'map-search-visible': searchVisible}">
-			<WFMap @poiClicked="onMapPOIClick" @onTouch="onClick" @loaded="mapLoaded" ref="map"/>
+			<WFMap @poiClicked="onMapPOIClick" @loaded="mapLoaded" ref="map"/>
 			<WFFloorsMenu :currentFloor="currentFloor" :hideWhenSingleFloor="true"/>
 			<div class="loading" v-if="loading"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>
 			<div class="header">
@@ -26,10 +26,10 @@
 				</div>
 				<div class="col col-tabs">
 					<WFYAH class="hide-landscape tab-button hide-mobile"/>
-					<TabButtons @switchTab="switchMainTab"/>
+					<TabButtons @switchTab="switchMainTab" :currentTab="searchVisible ? 'search' : currentTab"/>
 				</div>
 				<div class="col col-shortcuts">
-					<ShortcutsMenu @activateMenu="activateMenu" @showShortcut="showShortcut"/>
+					<ShortcutsMenu @activateMenu="activateMenu" @showShortcut="showShortcut" />
 				</div>
 			</div>
 			<div class="menus-bottom" :class="[{'active': menuActive}]">

@@ -12,7 +12,10 @@ import { mapState } from 'vuex';
 export default {
 	name: 'Tabs',
 	computed: {
-		...mapState(['currentTab', 'searchVisible'])
+		...mapState([ 'searchVisible'])
+	},
+	props: {
+		currentTab: String,
 	},
 	methods: {
 		switchTab (tab) {

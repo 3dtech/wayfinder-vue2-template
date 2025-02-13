@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 
 let WF_MAP_TYPE = "3d";
 let WF_PROJECT = "demo"
-const WF_API = "dev";
+const WF_API = "cdn";
 
 const store = new Vuex.Store({
 	state: {
